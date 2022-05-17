@@ -3,4 +3,3 @@ We are Creating a Website for the Local Train System based on the IRCTC Website 
 
 This Website Only For PC Or Laptop.
 
-Click Hear To Open Website https://manoj7923.github.io/E-Ticket.github.io/
