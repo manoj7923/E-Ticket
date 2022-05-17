@@ -32,8 +32,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
 
 <center>
 <h1>Your Payment Gateway</h1>
-<div class="banor">
- <marquee><h2><font color="blue" ><br><br><br>NOTE:->    Click to refresh button and enter the captcha Code To successfully your payment !!!	......... </font></h2></marquee><br> </div>
+
 <br>
 <div class="container">
 <?php
@@ -50,9 +49,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
                                                             ?>
   <form  action="pamentconn.php" method="post" >
   
+ <font color="blue" > Enter Any Number to Confirm Your Payment</font>
  
- 
-    <input type="number" id="CaptchaEnter" name="text1" placeholder="Enter Any Number  " required /><br>
+    <input type="number" id="CaptchaEnter" name="text1" placeholder="Enter Number  " required /><br>
 	<input type="hidden"  name="uname" value="<?php echo $_SESSION['name']; ?>"/>
 	 <input type="hidden" name="pay1"  value="<?=$row['tvalue']?>" />
 	
