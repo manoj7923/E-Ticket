@@ -1,0 +1,160 @@
+
+
+*{
+  font-family: 'Poppins', sans-serif;
+  margin:0; padding:0;
+  box-sizing: border-box;
+  outline: none; border:none;
+  text-transform: capitalize;
+  transition: all .2s linear;
+  
+}
+
+
+
+
+body{
+  background: linear-gradient(-135deg,  #32cd32, #00fa9a );
+}
+
+
+.container{
+	position:absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  width: 500px;
+  padding:20px;
+  left:30%;
+  Top:30%;
+  border-radius: 10px;
+}
+
+h1
+{
+	position: fixed;
+	background-color:#FFFFFF;
+	Width:100%;
+	color:black;
+	
+
+}
+
+
+label{
+	 font-family: sans-serif;
+  text-transform: uppercase;
+  font-size: 40px;
+}
+
+#captchaTxtArea{
+  background: url(cap.jpg);
+  color: #FF4500;
+  font-size: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  border: 3px solid black;
+  margin-top: 15px;
+  width: 130px;
+}
+
+#CaptchaEnter{
+  margin-top: 15px;
+  margin-bottom: 15px;
+  width: 290px;
+  height: 40px;
+  border: 3px solid black;
+  font-size: 27px;
+}
+
+#CaptchaEnter::placeholder{
+  color: black;
+  font-size: 24px;
+  text-align: center;
+}
+
+#name{
+  margin-top: 15px;
+  margin-bottom: 15px;
+  width: 290px;
+  height: 40px;
+  border: 3px solid black;
+  font-size: 27px;
+}
+
+#name::placeholder{
+  color: black;
+  font-size: 24px;
+  text-align: center;
+}
+
+
+#refreshbtn{
+  background: #3399ff;
+  width: 200px;
+  height: 35px;
+  border: 2px solid black;
+  font-weight: bold;
+}
+
+#checkbtn{
+  background: #66ff99;
+  width: 200px;
+  height: 35px;
+  border: 2px solid black;
+  font-weight: bold;
+}
+
+
+
+
+.loader_bg{
+    position: fixed;
+    z-index: 999999;
+    background: #fff;
+    width: 100%;
+    height: 100%;
+}
+.loader{
+    border: 0 soild transparent;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    top: calc(50vh - 75px);
+    left: calc(50vw - 75px);
+}
+.loader:before, .loader:after{
+    content: '';
+    border: 1em solid #ff5733;
+    border-radius: 50%;
+    width: inherit;
+    height: inherit;
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: loader 2s linear infinite;
+    opacity: 0;
+}
+.loader:before{
+    animation-delay: .5s;
+}
+@keyframes loader{
+    0%{
+        transform: scale(0);
+        opacity: 0;
+    }
+    50%{
+        opacity: 1;
+    }
+    100%{
+        transform: scale(1);
+        opacity: 0;
+    }
+}
+
+
+
