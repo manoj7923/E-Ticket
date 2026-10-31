@@ -1,0 +1,34 @@
+# Render.com Blueprint Specification for Western Railway E-Ticket Portal
+services:
+  - type: web
+    name: western-railway-eticket
+    runtime: docker
+    plan: free
+    region: oregon
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: wr-eticket-db
+          property: host
+      - key: DB_USER
+        fromDatabase:
+          name: wr-eticket-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: wr-eticket-db
+          property: password
+      - key: DB_NAME
+        fromDatabase:
+          name: wr-eticket-db
+          property: database
+      - key: DB_PORT
+        fromDatabase:
+          name: wr-eticket-db
+          property: port
+
+databases:
+  - name: wr-eticket-db
+    databaseName: test
+    user: railway_admin
+    plan: free

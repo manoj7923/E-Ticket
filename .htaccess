@@ -1,0 +1,26 @@
+# Western Railway E-Ticket Apache Configuration
+DirectoryIndex index.php demo.html index.html
+
+# Prevent Directory Browsing
+Options -Indexes
+
+# UTF-8 Encoding
+AddDefaultCharset UTF-8
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Redirect /tickets to tickets.php
+    RewriteRule ^tickets$ tickets.php [L,QSA]
+    RewriteRule ^cancel$ cancel.php [L,QSA]
+    RewriteRule ^contact$ contact.php [L,QSA]
+    RewriteRule ^payment$ payment.php [L,QSA]
+</IfModule>
+
+# Security Headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>

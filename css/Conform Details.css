@@ -1,0 +1,259 @@
+Body
+{
+	
+ background-image: url("image/img7.png");
+  background-size:auto;
+  background-position:center;
+  background-attachment:fixed;
+ 
+  background-repeat: no-repeat;
+ 	
+	
+}
+
+
+Body {
+  font-family: "Lato", sans-serif;
+}
+.manu {
+	 position:absolute;
+	 left:0%;
+	 
+ }
+.sidenav {
+  height:100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left:0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 100px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+
+
+*{ 
+   margin:0;
+   padding:0;
+   box-sizing: border-box;
+  
+}
+::-webkit-Scrollbar{
+	width:9px;
+}
+
+::-webkit-Scrollbar-thumb{
+	background: 
+silver;
+	border-radius:25px;
+}
+
+.logout{
+    position:absolute;	
+	
+	top:6%;
+	left:27%;
+	
+
+   
+}
+
+.logout a{
+	
+color:#FFFFFF;
+	
+}
+.name a{
+	color:#FFFFFF;
+}
+header
+{
+	position: fixed;
+	background-color:#FFFFFF;
+	Width:100%;
+	color:black;
+	
+
+}
+
+
+ header{
+       
+	   margin-top: 0px;
+	   
+ }
+  header
+{
+	
+	height: 6vh;
+}
+
+
+
+.topicon{
+	 position: absolute;
+	left:5%;
+	 Top:10%;
+	
+}
+
+.usericon{
+	 position: absolute;
+	left:85%;
+	 Top:0%;
+}
+.usern{
+	 position: absolute;
+	left:90%;
+	 Top:10%;
+	   font-size:15px;
+	  text-decoration:none;
+}
+
+form
+{ 
+      position: absolute;
+	  width:38%;
+		height:750%;
+	    left:30%;
+		Top:350%;
+        padding: 40px;  
+        background: Window;  
+        border-radius: 40px ;  
+}
+ 
+ .date{
+     position:absolute;
+     left:8%;
+	 Top:37%;
+}
+ 
+ .time{
+        position:absolute;
+        top:37%; 
+        left:59%;
+ }
+  button{  
+    width: 200px;  
+    height: 30px; 
+	Top:25%;
+    background:;  
+    border-radius: 20px;  
+    padding-left: 7px;  
+    color: black;  
+ }
+
+.to {
+          position: absolute;
+        top:25%; 
+        left:59%;	
+
+}
+
+.back{
+  position: absolute;
+        top:81.6%; 
+        left:2%;	
+}
+
+.sub{
+  position: absolute;
+        top:81.6%; 
+        left:55%;	
+}
+
+.no{
+  position: absolute;
+        top:49%; 
+        left:55%;	
+}
+.sr{
+  position: absolute;
+        top:45.6%; 
+        left:8%;	
+}
+.sr1{
+  position: absolute;
+        top:49.9%; 
+        left:28%;	
+}
+.rat{
+  position: absolute;
+        top:65.6%; 
+        left:36%;	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ footer
+{
+	position: fixed;
+	background-color:	#000000;
+	Width:100%;
+	color:white;
+
+}
+footer
+{
+	height: 5vh;
+	bottom:0;
+}
+.f1
+{
+	 position: absolute;
+	  left:1%;
+	   Top:25%;
+}
+.f2
+{
+	 position: absolute;
+	  left:85%;
+	   Top:25%;
+}

@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mumbai Suburban Railway E-Ticket Portal | WR • CR • HR Multi-Line Live System</title>
+    <link rel="icon" href="image/icon1.png" type="image/png">
+    <link rel="stylesheet" href="css/modern-railway.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .view-section { display: none; }
+        .view-section.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .nav-link.active-tab { background: rgba(245, 158, 11, 0.2); color: var(--wr-saffron); }
+    </style>
+</head>
+<body class="railway-bg">
+
+    <!-- Header Navigation -->
+    <header class="railway-header no-print">
+        <div class="header-container">
+            <a href="javascript:void(0)" onclick="showView('home')" class="brand-wrapper">
+                <img src="image/icon1.png" alt="Indian Railways Emblem" class="brand-logo-img" onerror="this.src='image/icon3.png'">
+                <div class="brand-text">
+                    <h1>Mumbai <span>Suburban Rail</span></h1>
+                    <p>UTS Suburban E-Ticketing • WR • CR • HR</p>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="header-nav">
+                <a href="javascript:void(0)" id="nav-home" onclick="showView('home')" class="nav-link active-tab"><i class="fas fa-train"></i> Book Ticket</a>
+                <a href="javascript:void(0)" id="nav-ticket" onclick="showView('ticket')" class="nav-link"><i class="fas fa-ticket-simple"></i> My Ticket</a>
+                <a href="javascript:void(0)" id="nav-cancel" onclick="showView('cancel')" class="nav-link"><i class="fas fa-ban"></i> Cancel Ticket</a>
+                <a href="javascript:void(0)" id="nav-about" onclick="showView('about')" class="nav-link"><i class="fas fa-circle-info"></i> Network Info</a>
+                <a href="javascript:void(0)" id="nav-contact" onclick="showView('contact')" class="nav-link"><i class="fas fa-headset"></i> Rail Madad</a>
+                <a href="javascript:void(0)" id="nav-admin" onclick="showView('admin')" class="nav-link" style="color:var(--wr-saffron);"><i class="fas fa-shield-halved"></i> Admin Console</a>
+            </nav>
+
+            <div class="header-user-panel">
+                <div class="live-clock-badge">
+                    <span class="live-pulse-dot"></span>
+                    <i class="far fa-clock"></i>
+                    <span id="liveClock">--:--:--</span> IST
+                </div>
+
+                <div class="user-badge" id="userBadge">
+                    <div class="user-avatar" id="userAvatar">M</div>
+                    <span class="user-name" id="userNameDisplay">Manoj Gupta</span>
+                </div>
+
+                <button class="mobile-nav-toggle" onclick="toggleNavDrawer()" aria-label="Toggle navigation menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Drawer Overlay & Nav -->
+    <div class="drawer-overlay" id="drawerOverlay" onclick="closeNavDrawer()"></div>
+    <div class="mobile-drawer" id="mobileDrawer">
+        <div class="mobile-drawer-header">
+            <div style="display:flex; align-items:center; gap:0.5rem; color:#ffffff;">
+                <img src="image/icon1.png" width="28" height="28" alt="Logo">
+                <span style="font-weight:700;">Mumbai Suburban E-Ticket</span>
+            </div>
+            <button onclick="closeNavDrawer()" style="background:none; border:none; color:#ffffff; font-size:1.25rem; cursor:pointer;">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="mobile-drawer-links">
+            <a href="javascript:void(0)" onclick="showView('home'); closeNavDrawer();" class="nav-link"><i class="fas fa-train"></i> Book Ticket</a>
+            <a href="javascript:void(0)" onclick="showView('ticket'); closeNavDrawer();" class="nav-link"><i class="fas fa-ticket-simple"></i> View Current Ticket</a>
+            <a href="javascript:void(0)" onclick="showView('cancel'); closeNavDrawer();" class="nav-link"><i class="fas fa-ban"></i> Cancel Ticket</a>
+            <a href="javascript:void(0)" onclick="showView('about'); closeNavDrawer();" class="nav-link"><i class="fas fa-circle-info"></i> About Route & Network</a>
+            <a href="javascript:void(0)" onclick="showView('contact'); closeNavDrawer();" class="nav-link"><i class="fas fa-headset"></i> Passenger Grievance</a>
+            <a href="javascript:void(0)" onclick="showView('admin'); closeNavDrawer();" class="nav-link" style="color:var(--wr-saffron);"><i class="fas fa-shield-halved"></i> Admin Console</a>
+        </div>
+    </div>
+
+    <!-- Official Railway Ticker -->
+    <div class="railway-ticker no-print">
+        <span class="ticker-label"><i class="fas fa-bullhorn"></i> MUMBAI LOCAL LIVE</span>
+        <div class="ticker-content">
+            Suburban Services Running across Western Line (Churchgate - Dahanu), Central Line (CSMT - Kalyan - Kasara/Karjat), and Harbour Line (CSMT - Panvel) • Confirmed tickets carry 12-Hour Validity across all lines • Transfers available at Dadar (WR ⇄ CR) and Kurla (CR ⇄ HR).
+        </div>
+    </div>
+
+    <!-- MAIN VIEW CONTAINER -->
+    <main class="main-wrapper">
+
+        <!-- ==========================================
+             1. HOME / BOOKING VIEW
+             ========================================== -->
+        <section id="view-home" class="view-section active">
+            <!-- Line Status Pills -->
+            <div style="display:flex; flex-wrap:wrap; gap:0.75rem; margin-bottom:1.5rem; justify-content:center;">
+                <span class="badge badge-wr" style="padding:0.4rem 0.85rem; font-size:0.82rem;">
+                    <i class="fas fa-circle-check"></i> Western Line (37 Stations)
+                </span>
+                <span class="badge badge-cr" style="padding:0.4rem 0.85rem; font-size:0.82rem;">
+                    <i class="fas fa-circle-check"></i> Central Main Line (32 Stations)
+                </span>
+                <span class="badge badge-hr" style="padding:0.4rem 0.85rem; font-size:0.82rem;">
+                    <i class="fas fa-circle-check"></i> Harbour Line (25 Stations)
+                </span>
+                <span class="badge-12h" style="padding:0.4rem 0.85rem;">
+                    <i class="fas fa-stopwatch"></i> 12-Hour Ticket Validity
+                </span>
+            </div>
+
+            <!-- ==========================================================
+                 INTERACTIVE MAP BOOKING SECTION
+                 ========================================================== -->
+            <section id="mapBookingSection" class="transit-map-wrapper">
+                <div class="transit-map-toolbar">
+                    <div style="display:flex; align-items:center; gap:0.5rem;">
+                        <span style="font-weight:800; color:var(--wr-navy-900); font-size:0.95rem;">
+                            <i class="fas fa-map-location-dot" style="color:var(--wr-blue-600);"></i> Interactive Mumbai Suburban Transit Map
+                        </span>
+                        <span style="font-size:0.75rem; color:#64748b;">(Click Station to Pick Route)</span>
+                    </div>
+
+                    <!-- Line Filters -->
+                    <div class="map-line-filters">
+                        <button type="button" class="map-filter-btn active" data-line="ALL" onclick="filterMapLine('ALL')">All Networks</button>
+                        <button type="button" class="map-filter-btn" data-line="WR" onclick="filterMapLine('WR')">Western (WR)</button>
+                        <button type="button" class="map-filter-btn" data-line="CR" onclick="filterMapLine('CR')">Central (CR)</button>
+                        <button type="button" class="map-filter-btn" data-line="HR" onclick="filterMapLine('HR')">Harbour (HR)</button>
+                        <button type="button" class="btn-secondary" style="padding:0.25rem 0.65rem; font-size:0.75rem;" onclick="clearMapSelection()">
+                            <i class="fas fa-rotate-left"></i> Reset
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Map SVG Canvas -->
+                <div class="transit-map-canvas-box">
+                    <div id="transitMapContainer" style="width:100%; max-width:900px;"></div>
+                </div>
+
+                <!-- Floating Route HUD Card -->
+                <div id="mapRouteHUD" class="map-route-hud-card"></div>
+            </section>
+
+            <!-- ==========================================================
+                 JOURNEY PLANNER SEARCH FORM CARD
+                 ========================================================== -->
+            <div class="glass-card">
+                <div class="glass-card-header">
+                    <h2><i class="fas fa-ticket"></i> Journey Planner & Instant Booking</h2>
+                    <span class="badge badge-success"><i class="fas fa-shield-check"></i> 12 Hours Validity On Confirmation</span>
+                </div>
+
+                <div class="glass-card-body">
+                    <form id="standaloneBookingForm" onsubmit="event.preventDefault(); goToTrainSelection();">
+                        <div class="booking-grid">
+                            <div class="station-input-group">
+                                <label for="homeFrom"><i class="fas fa-location-dot" style="color:var(--wr-green);"></i> Source Station (Origin)</label>
+                                <div class="station-input-box">
+                                    <i class="fas fa-train-subway station-icon"></i>
+                                    <input list="allStationsDatalist" id="homeFrom" placeholder="Type or select station (e.g. Churchgate / CSMT / Thane)" required value="Churchgate" oninput="updateFareUI()">
+                                </div>
+                            </div>
+
+                            <button type="button" class="swap-btn" onclick="swapStationInputs()" title="Swap Source & Destination">
+                                <i class="fas fa-arrow-right-arrow-left"></i>
+                            </button>
+
+                            <div class="station-input-group">
+                                <label for="homeTo"><i class="fas fa-location-crosshairs" style="color:var(--wr-crimson);"></i> Destination Station</label>
+                                <div class="station-input-box">
+                                    <i class="fas fa-train-subway station-icon"></i>
+                                    <input list="allStationsDatalist" id="homeTo" placeholder="Type or select station (e.g. Borivali / Kalyan / Panvel)" required value="Borivali" oninput="updateFareUI()">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 89 Stations Multi-Line Datalist -->
+                        <datalist id="allStationsDatalist">
+                            <!-- Western Line (Churchgate - Dahanu) -->
+                            <option value="Churchgate">Churchgate [WR] (CCG)</option>
+                            <option value="Marine Lines">Marine Lines [WR] (MEL)</option>
+                            <option value="Charni Road">Charni Road [WR] (CYR)</option>
+                            <option value="Grant Road">Grant Road [WR] (GTR)</option>
+                            <option value="Mumbai Central">Mumbai Central [WR] (MMCT)</option>
+                            <option value="Mahalaxmi">Mahalaxmi [WR] (MX)</option>
+                            <option value="Lower Parel">Lower Parel [WR] (PL)</option>
+                            <option value="Prabhadevi">Prabhadevi [WR - Interchange with Parel CR] (PBHD)</option>
+                            <option value="Dadar (WR)">Dadar [WR - Interchange with Central Line] (DDR)</option>
+                            <option value="Matunga Road">Matunga Road [WR] (MRU)</option>
+                            <option value="Mahim Junction">Mahim Junction [WR - Interchange with Harbour Branch] (MM)</option>
+                            <option value="Bandra">Bandra [WR - Interchange with Harbour Branch] (BA)</option>
+                            <option value="Khar Road">Khar Road [WR] (KHAR)</option>
+                            <option value="Santacruz">Santacruz [WR] (STC)</option>
+                            <option value="Vile Parle">Vile Parle [WR] (VLP)</option>
+                            <option value="Andheri">Andheri [WR - Interchange with Metro 1 & Harbour] (ADH)</option>
+                            <option value="Jogeshwari">Jogeshwari [WR] (JOS)</option>
+                            <option value="Ram Mandir">Ram Mandir [WR] (RMAR)</option>
+                            <option value="Goregaon">Goregaon [WR - Harbour Branch Terminus] (GMN)</option>
+                            <option value="Malad">Malad [WR] (MDD)</option>
+                            <option value="Kandivali">Kandivali [WR] (KNDI)</option>
+                            <option value="Borivali">Borivali [WR] (BVI)</option>
+                            <option value="Dahisar">Dahisar [WR] (DIC)</option>
+                            <option value="Mira Road">Mira Road [WR] (MIRA)</option>
+                            <option value="Bhayandar">Bhayandar [WR] (BYR)</option>
+                            <option value="Naigaon">Naigaon [WR] (NIG)</option>
+                            <option value="Vasai Road">Vasai Road [WR - Link with CR Diva] (BSR)</option>
+                            <option value="Nala Sopara">Nala Sopara [WR] (NSP)</option>
+                            <option value="Virar">Virar [WR] (VR)</option>
+                            <option value="Palghar">Palghar [WR] (PLG)</option>
+                            <option value="Boisar">Boisar [WR] (BOR)</option>
+                            <option value="Dahanu Road">Dahanu Road [WR] (DRD)</option>
+
+                            <!-- Central Main Line (CSMT - Kalyan - Kasara/Karjat) -->
+                            <option value="CSMT (Central)">CSMT [CR - Interchange with Harbour Line] (CSMT)</option>
+                            <option value="Masjid (CR)">Masjid [CR] (MSD)</option>
+                            <option value="Sandhurst Road (CR)">Sandhurst Road [CR - Interchange with Harbour] (SNRD)</option>
+                            <option value="Byculla">Byculla [CR] (BY)</option>
+                            <option value="Chinchpokli">Chinchpokli [CR] (CHG)</option>
+                            <option value="Currey Road">Currey Road [CR] (CRD)</option>
+                            <option value="Parel">Parel [CR - Interchange with Prabhadevi WR] (PR)</option>
+                            <option value="Dadar (CR)">Dadar [CR - Interchange with Western Line] (DDR)</option>
+                            <option value="Matunga">Matunga [CR] (MTN)</option>
+                            <option value="Sion">Sion [CR] (SIN)</option>
+                            <option value="Kurla (CR)">Kurla [CR - Interchange with Harbour Line] (CLA)</option>
+                            <option value="Vidyavihar">Vidyavihar [CR] (VVH)</option>
+                            <option value="Ghatkopar">Ghatkopar [CR - Interchange with Metro 1] (GC)</option>
+                            <option value="Vikhroli">Vikhroli [CR] (VK)</option>
+                            <option value="Kanjurmarg">Kanjurmarg [CR] (KJMG)</option>
+                            <option value="Bhandup">Bhandup [CR] (BND)</option>
+                            <option value="Nahur">Nahur [CR] (NHU)</option>
+                            <option value="Mulund">Mulund [CR] (MLND)</option>
+                            <option value="Thane">Thane [CR - Interchange with Trans-Harbour] (TNA)</option>
+                            <option value="Kalva">Kalva [CR] (KLVA)</option>
+                            <option value="Mumbra">Mumbra [CR] (MBQ)</option>
+                            <option value="Diva Junction">Diva Junction [CR - Link with Vasai WR] (DIVA)</option>
+                            <option value="Kopar">Kopar [CR] (KOPR)</option>
+                            <option value="Dombivli">Dombivli [CR] (DI)</option>
+                            <option value="Thakurli">Thakurli [CR] (THK)</option>
+                            <option value="Kalyan Junction">Kalyan Junction [CR] (KYN)</option>
+                            <option value="Titwala">Titwala [CR] (TLA)</option>
+                            <option value="Asangaon">Asangaon [CR] (ASO)</option>
+                            <option value="Kasara">Kasara [CR] (KSRA)</option>
+                            <option value="Ambernath">Ambernath [CR] (ABH)</option>
+                            <option value="Badlapur">Badlapur [CR] (BUD)</option>
+                            <option value="Karjat">Karjat [CR] (KJT)</option>
+
+                            <!-- Harbour Line (CSMT - Panvel) -->
+                            <option value="CSMT (Harbour)">CSMT [HR - Interchange with Central Line] (CSMT)</option>
+                            <option value="Dockyard Road">Dockyard Road [HR] (DKRD)</option>
+                            <option value="Reay Road">Reay Road [HR] (RRD)</option>
+                            <option value="Cotton Green">Cotton Green [HR] (CTGN)</option>
+                            <option value="Sewri">Sewri [HR] (SVE)</option>
+                            <option value="Vadala Road">Vadala Road [HR - Interchange with Bandra/Andheri Branch] (VDLR)</option>
+                            <option value="GTB Nagar">GTB Nagar [HR] (GTBN)</option>
+                            <option value="Chunabhatti">Chunabhatti [HR] (CHF)</option>
+                            <option value="Kurla (Harbour)">Kurla [HR - Interchange with Central Line] (CLA)</option>
+                            <option value="Tilak Nagar">Tilak Nagar [HR] (TKNG)</option>
+                            <option value="Chembur">Chembur [HR - Interchange with Monorail] (CMBR)</option>
+                            <option value="Govandi">Govandi [HR] (GV)</option>
+                            <option value="Mankhurd">Mankhurd [HR] (MNKD)</option>
+                            <option value="Vashi">Vashi [HR - Navi Mumbai / Trans-Harbour] (VSH)</option>
+                            <option value="Sanpada">Sanpada [HR] (SNCR)</option>
+                            <option value="Juinagar">Juinagar [HR] (JNJ)</option>
+                            <option value="Nerul">Nerul [HR] (NEU)</option>
+                            <option value="Seawoods-Darave">Seawoods-Darave [HR] (SWDV)</option>
+                            <option value="Belapur CBD">Belapur CBD [HR] (BEPR)</option>
+                            <option value="Kharghar">Kharghar [HR] (KHAG)</option>
+                            <option value="Mansarovar">Mansarovar [HR] (MANR)</option>
+                            <option value="Khandeshwar">Khandeshwar [HR] (KNDS)</option>
+                            <option value="Panvel">Panvel [HR - Terminus & Konkan Railway] (PNVL)</option>
+                        </datalist>
+
+                        <!-- Additional Options -->
+                        <div class="booking-options-grid">
+                            <div class="form-group">
+                                <label for="homeClass"><i class="fas fa-couch"></i> Travel Class</label>
+                                <select id="homeClass" class="form-control" onchange="updateFareUI()">
+                                    <option value="Second Class">Second Class (II Ordinary)</option>
+                                    <option value="First Class">First Class (FC)</option>
+                                    <option value="AC Local">AC Local EMU (Air Conditioned)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label><i class="fas fa-repeat"></i> Journey Type</label>
+                                <div class="trip-type-segmented">
+                                    <button type="button" class="trip-type-btn active" id="btnTypeSingle" onclick="setTripTypeLocal('Single')">Single Journey</button>
+                                    <button type="button" class="trip-type-btn" id="btnTypeReturn" onclick="setTripTypeLocal('Return')">Return Journey</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="homeDate"><i class="fas fa-calendar-day"></i> Journey Date</label>
+                                <input type="date" id="homeDate" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="homeTime"><i class="fas fa-clock"></i> Preferred Time</label>
+                                <input type="time" id="homeTime" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Live Fare Estimator Banner -->
+                        <div class="fare-estimate-banner">
+                            <div>
+                                <div class="fare-info-title"><i class="fas fa-calculator"></i> Estimated Multi-Line Suburban Fare</div>
+                                <div class="fare-info-details" id="liveRouteSummary">Churchgate ➔ Borivali (Second Class) • Western Line</div>
+                                <div style="font-size: 0.8rem; color: #64748b; margin-top: 0.2rem;" id="liveRouteMeta">
+                                    Distance: <strong id="liveDistance">34.2 km (~62 mins)</strong> • <span class="badge-12h" style="padding:0.15rem 0.5rem; font-size:0.72rem;"><i class="fas fa-hourglass-half"></i> 12h Valid</span>
+                                </div>
+                            </div>
+                            <div class="fare-amount-display">
+                                <span class="fare-currency">₹</span>
+                                <span class="fare-number" id="liveFareDisplay">15</span>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 1rem;">
+                            <button type="button" class="btn-secondary" onclick="resetBookingForm()">
+                                <i class="fas fa-rotate-left"></i> Reset Fields
+                            </button>
+                            <button type="submit" class="btn-primary">
+                                <i class="fas fa-train"></i> Find Local Trains & Proceed
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div style="margin-top: 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+                <div class="glass-card" style="padding: 1.25rem; display: flex; align-items: center; gap: 1rem;">
+                    <div style="width: 48px; height: 48px; border-radius: 12px; background: var(--wr-blue-100); color: var(--wr-blue-600); display:flex; align-items:center; justify-content:center; font-size:1.5rem;">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div>
+                        <h4 style="font-size: 0.95rem; font-weight:700;">Fast & Slow Locals</h4>
+                        <p style="font-size: 0.8rem; color: var(--text-secondary);">Western, Central & Harbour EMU trains every 3-4 mins</p>
+                    </div>
+                </div>
+
+                <div class="glass-card" style="padding: 1.25rem; display: flex; align-items: center; gap: 1rem;">
+                    <div style="width: 48px; height: 48px; border-radius: 12px; background: var(--wr-green-light); color: var(--wr-green); display:flex; align-items:center; justify-content:center; font-size:1.5rem;">
+                        <i class="fas fa-snowflake"></i>
+                    </div>
+                    <div>
+                        <h4 style="font-size: 0.95rem; font-weight:700;">Air-Conditioned EMU</h4>
+                        <p style="font-size: 0.8rem; color: var(--text-secondary);">Cool comfortable suburban transit across all lines</p>
+                    </div>
+                </div>
+
+                <div class="glass-card" style="padding: 1.25rem; display: flex; align-items: center; gap: 1rem;">
+                    <div style="width: 48px; height: 48px; border-radius: 12px; background: var(--wr-saffron-light); color: var(--wr-saffron); display:flex; align-items:center; justify-content:center; font-size:1.5rem;">
+                        <i class="fas fa-stopwatch"></i>
+                    </div>
+                    <div>
+                        <h4 style="font-size: 0.95rem; font-weight:700;">12-Hour Ticket Validity</h4>
+                        <p style="font-size: 0.8rem; color: var(--text-secondary);">Strict 12h travel countdown with anti-fraud QR code</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             2. TRAIN SELECTION VIEW
+             ========================================== -->
+        <section id="view-trains" class="view-section">
+            <div class="glass-card">
+                <div class="glass-card-header">
+                    <h2><i class="fas fa-route"></i> Select Available Local Train</h2>
+                    <div style="display:flex; align-items:center; gap:0.5rem;">
+                        <span class="badge-12h"><i class="fas fa-stopwatch"></i> 12h Ticket Validity</span>
+                        <span style="font-size: 0.85rem; color: #cbd5e1;">Step 2 of 4: Fare & Schedule</span>
+                    </div>
+                </div>
+
+                <div class="glass-card-body">
+                    <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border: 1px solid #bae6fd; border-radius: var(--radius-lg); padding: 1rem 1.5rem; margin-bottom: 2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
+                        <div>
+                            <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: #0284c7;" id="trainsRouteLineMeta">
+                                Selected Journey • Multi-Line Network
+                            </div>
+                            <div style="font-size: 1.25rem; font-weight: 800; color: #0c4a6e;" id="trainsRouteTitle">
+                                Churchgate ➔ Borivali
+                            </div>
+                            <div style="font-size: 0.82rem; color: #475569; margin-top: 0.2rem;" id="trainsInterchangeNote">
+                                Direct Fast Suburban EMU Service
+                            </div>
+                        </div>
+                        <div style="display:flex; gap: 1.5rem; font-size: 0.85rem;">
+                            <div>Class: <strong id="trainsClassTitle">Second Class</strong></div>
+                            <div>Date: <strong id="trainsDateTitle">Today</strong></div>
+                        </div>
+                    </div>
+
+                    <!-- Single Option -->
+                    <div style="background: #ffffff; border: 2px solid #e2e8f0; border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.25rem;">
+                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;">
+                            <div style="display: flex; align-items: center; gap: 1.25rem;">
+                                <div style="width: 44px; height: 44px; border-radius: 50%; background: var(--wr-blue-100); color: var(--wr-blue-600); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem;">
+                                    1
+                                </div>
+                                <div>
+                                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                                        <span class="badge badge-info">Single Journey</span>
+                                        <span class="badge-12h" style="font-size:0.72rem; padding:0.15rem 0.5rem;">Valid 12 Hours</span>
+                                        <span style="font-family: var(--font-mono); font-weight: 700; font-size: 0.9rem; color: var(--wr-navy-800);" id="cardTrain1">Train EMU-90101</span>
+                                    </div>
+                                    <div style="font-size: 0.95rem; font-weight: 700;" id="cardRoute1">Churchgate ➔ Borivali</div>
+                                    <div style="font-size: 0.78rem; color: #64748b;"><i class="fas fa-clock"></i> Departs in ~4 mins • Active on platforms 2/3</div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; align-items: center; gap: 1.5rem;">
+                                <div style="text-align: right;">
+                                    <div style="font-size: 0.72rem; text-transform: uppercase; color: #64748b; font-weight: 600;">Total Amount</div>
+                                    <div style="font-size: 1.6rem; font-weight: 800; color: var(--wr-navy-900); font-family: var(--font-mono);" id="fareSingleDisplay">₹15.00</div>
+                                </div>
+                                <button type="button" class="btn-primary" style="width: auto; padding: 0.8rem 1.75rem;" onclick="proceedToPayment('Single')">
+                                    <i class="fas fa-check-circle"></i> Book Single Ticket
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Return Option -->
+                    <div style="background: #ffffff; border: 2px solid #e2e8f0; border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.5rem;">
+                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;">
+                            <div style="display: flex; align-items: center; gap: 1.25rem;">
+                                <div style="width: 44px; height: 44px; border-radius: 50%; background: var(--wr-green-light); color: var(--wr-green); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem;">
+                                    2
+                                </div>
+                                <div>
+                                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                                        <span class="badge badge-success">Return Journey (Round Trip)</span>
+                                        <span class="badge-12h" style="font-size:0.72rem; padding:0.15rem 0.5rem;">Valid 12 Hours</span>
+                                        <span style="font-family: var(--font-mono); font-weight: 700; font-size: 0.9rem; color: var(--wr-navy-800);" id="cardTrain2">Train EMU-90102</span>
+                                    </div>
+                                    <div style="font-size: 0.95rem; font-weight: 700;" id="cardRoute2">Churchgate ⇄ Borivali</div>
+                                    <div style="font-size: 0.78rem; color: #64748b;"><i class="fas fa-arrows-spin"></i> Outward & Return included • Valid 12h from issuance</div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; align-items: center; gap: 1.5rem;">
+                                <div style="text-align: right;">
+                                    <div style="font-size: 0.72rem; text-transform: uppercase; color: #64748b; font-weight: 600;">Total Amount</div>
+                                    <div style="font-size: 1.6rem; font-weight: 800; color: var(--wr-navy-900); font-family: var(--font-mono);" id="fareReturnDisplay">₹30.00</div>
+                                </div>
+                                <button type="button" class="btn-primary" style="width: auto; padding: 0.8rem 1.75rem; background: linear-gradient(135deg, #059669 0%, #10b981 100%);" onclick="proceedToPayment('Return')">
+                                    <i class="fas fa-check-double"></i> Book Return Ticket
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn-secondary" onclick="showView('home')">
+                        <i class="fas fa-arrow-left"></i> Change Route / Stations
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             3. PAYMENT GATEWAY VIEW
+             ========================================== -->
+        <section id="view-payment" class="view-section" style="max-width: 850px; margin:0 auto;">
+            <div class="glass-card">
+                <div class="glass-card-header" style="background: linear-gradient(135deg, #0b2545 0%, #1e3a5f 100%);">
+                    <h2><i class="fas fa-shield-halved"></i> Railway Payment Gateway</h2>
+                    <div style="display:flex; align-items:center; gap:0.5rem;">
+                        <span class="badge-12h"><i class="fas fa-stopwatch"></i> 12h Validity Active</span>
+                        <span class="badge badge-success"><i class="fas fa-lock"></i> 256-Bit SSL Encrypted</span>
+                    </div>
+                </div>
+
+                <div class="glass-card-body">
+                    <!-- Order Summary -->
+                    <div style="background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); border-radius: var(--radius-lg); padding: 1.25rem 1.75rem; border: 1px solid var(--border-color); margin-bottom: 2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
+                        <div>
+                            <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Journey Summary</div>
+                            <div style="font-size: 1.25rem; font-weight: 800; color: var(--wr-navy-900);" id="payRouteSummary">
+                                Churchgate To Borivali
+                            </div>
+                            <div style="font-size: 0.85rem; color: #64748b; margin-top: 0.2rem;">
+                                <span class="badge badge-info" id="payModeBadge">Single Ticket</span> • 
+                                Passenger: <strong>Manoj Gupta</strong> • 
+                                <span class="badge-12h" style="font-size:0.72rem; padding:0.15rem 0.5rem;">12h Valid</span>
+                            </div>
+                        </div>
+
+                        <div style="text-align: right;">
+                            <div style="font-size: 0.75rem; text-transform: uppercase; color: #64748b; font-weight: 700;">Total Payable</div>
+                            <div style="font-size: 2.1rem; font-weight: 800; color: var(--wr-navy-900); font-family: var(--font-mono);" id="payAmountDisplay">
+                                ₹15.00
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Tabs -->
+                    <div class="payment-methods-grid">
+                        <div class="payment-tabs">
+                            <button type="button" class="payment-tab-btn active" onclick="switchPayTab('upi', this)">
+                                <i class="fas fa-qrcode"></i> UPI & QR Code
+                            </button>
+                            <button type="button" class="payment-tab-btn" onclick="switchPayTab('card', this)">
+                                <i class="fas fa-credit-card"></i> Debit / Credit Card
+                            </button>
+                            <button type="button" class="payment-tab-btn" onclick="switchPayTab('net', this)">
+                                <i class="fas fa-building-columns"></i> Net Banking
+                            </button>
+                            <button type="button" class="payment-tab-btn" onclick="switchPayTab('wallet', this)">
+                                <i class="fas fa-wallet"></i> R-Wallet
+                            </button>
+                        </div>
+
+                        <div class="payment-tab-content">
+                            <!-- UPI -->
+                            <div id="ptab-upi" class="tab-pane">
+                                <div class="upi-qr-container">
+                                    <h4 style="font-weight: 700; color: var(--wr-navy-900);">Scan Dynamic QR with Any UPI App</h4>
+                                    <p style="font-size: 0.82rem; color: var(--text-secondary);">Google Pay, PhonePe, Paytm, BHIM</p>
+                                    <div class="upi-qr-frame">
+                                        <div id="demoPaymentQR"></div>
+                                        <div style="margin-top: 0.5rem; font-size: 0.75rem; font-weight: 700; color: var(--wr-crimson);">
+                                            <i class="fas fa-stopwatch"></i> QR Expires in: <span id="payTimer">04:59</span>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn-primary" style="background: linear-gradient(135deg, #059669 0%, #10b981 100%); margin-top: 1rem;" onclick="finalizePayment('UPI')">
+                                        <i class="fas fa-bolt"></i> Authorize & Issue Ticket
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Card -->
+                            <div id="ptab-card" class="tab-pane" style="display:none;">
+                                <div class="form-group" style="margin-bottom: 1rem;">
+                                    <label><i class="fas fa-credit-card"></i> Card Number</label>
+                                    <input type="text" class="form-control" value="4532 9821 7721 8821">
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                                    <div class="form-group">
+                                        <label>Expiry (MM/YY)</label>
+                                        <input type="text" class="form-control" value="12/28">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>CVV</label>
+                                        <input type="password" class="form-control" value="842">
+                                    </div>
+                                </div>
+                                <button type="button" class="btn-primary" onclick="finalizePayment('Card')">
+                                    <i class="fas fa-lock"></i> Authorize Card Payment
+                                </button>
+                            </div>
+
+                            <!-- Net Banking -->
+                            <div id="ptab-net" class="tab-pane" style="display:none;">
+                                <div class="form-group" style="margin-bottom: 1.5rem;">
+                                    <label><i class="fas fa-building-columns"></i> Select Bank</label>
+                                    <select class="form-control">
+                                        <option>State Bank of India (SBI)</option>
+                                        <option>HDFC Bank</option>
+                                        <option>ICICI Bank</option>
+                                        <option>Axis Bank</option>
+                                    </select>
+                                </div>
+                                <button type="button" class="btn-primary" onclick="finalizePayment('Net Banking')">
+                                    <i class="fas fa-arrow-up-right-from-square"></i> Authorize via Net Banking
+                                </button>
+                            </div>
+
+                            <!-- Wallet -->
+                            <div id="ptab-wallet" class="tab-pane" style="display:none;">
+                                <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.5rem;">
+                                    <div style="font-size: 0.8rem; color: #64748b;">Railway R-Wallet Balance</div>
+                                    <div style="font-size: 1.5rem; font-weight: 800; color: var(--wr-green);">₹350.00</div>
+                                </div>
+                                <button type="button" class="btn-primary" style="background: linear-gradient(135deg, #059669 0%, #10b981 100%);" onclick="finalizePayment('R-Wallet')">
+                                    <i class="fas fa-wallet"></i> 1-Click Pay with R-Wallet
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             4. UTS BOARDING PASS E-TICKET (12h VALID)
+             ========================================== -->
+        <section id="view-ticket" class="view-section ticket-wrapper">
+            <div class="uts-ticket-card" id="standaloneTicketCard">
+                <div class="uts-ticket-header">
+                    <div class="uts-brand-left">
+                        <img src="image/icon1.png" alt="Indian Railways Emblem" style="width: 36px; height: 36px; object-fit: contain; background: #ffffff; border-radius: 8px; padding: 2px;">
+                        <div>
+                            <div class="uts-brand-title">INDIAN RAILWAYS • CRIS UTS ON MOBILE</div>
+                            <div class="uts-brand-sub" id="ticketLineNetwork">Mumbai Suburban Railway • EMU Service</div>
+                        </div>
+                    </div>
+                    <div class="uts-pnr-badge">
+                        <div class="pnr-label">Booking No / UTS Ref</div>
+                        <div class="pnr-code" id="ticketPnrDisplay">UTS-WR-83921</div>
+                    </div>
+                </div>
+
+                <!-- 12-Hour Validity Countdown Meter (Live) -->
+                <div class="validity-meter-box" style="margin: 1.25rem 1.75rem 0.5rem;">
+                    <div class="validity-header-row">
+                        <div class="validity-title">
+                            <i class="fas fa-hourglass-half"></i> 12-Hour Ticket Validity Window
+                        </div>
+                        <div class="validity-countdown-text" id="demoTicketCountdown">
+                            11h 59m 59s remaining
+                        </div>
+                    </div>
+                    <div class="validity-progress-bar-bg">
+                        <div class="validity-progress-bar-fill" id="demoValidityProgressBar" style="width: 100%;"></div>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:#065f46; margin-top:0.15rem;">
+                        <span>Issued: <strong id="demoIssuedAt">Today</strong></span>
+                        <span>Valid Until: <strong id="demoValidUntil">+12 Hours</strong></span>
+                    </div>
+                </div>
+
+                <div class="uts-route-section">
+                    <div class="station-node">
+                        <div class="node-label">Origin Station</div>
+                        <div class="node-name" id="ticketOriginDisplay">Churchgate</div>
+                        <div class="node-code" id="ticketOriginCode">[ CCG ]</div>
+                    </div>
+
+                    <div class="route-arrow-connector">
+                        <span class="route-train-type" id="ticketTypeBadge">SINGLE JOURNEY</span>
+                        <i class="fas fa-arrow-right-long route-arrow-icon"></i>
+                        <span style="font-size:0.72rem; color:#64748b; font-weight:600;" id="ticketLineLabel">Fast/Slow Local</span>
+                    </div>
+
+                    <div class="station-node destination">
+                        <div class="node-label">Destination Station</div>
+                        <div class="node-name" id="ticketDestDisplay">Borivali</div>
+                        <div class="node-code" id="ticketDestCode">[ BVI ]</div>
+                    </div>
+                </div>
+
+                <div class="uts-details-grid">
+                    <div class="detail-item-group">
+                        <span class="detail-title">Passenger Name</span>
+                        <span class="detail-value">Manoj Gupta</span>
+                    </div>
+                    <div class="detail-item-group">
+                        <span class="detail-title">Assigned Train</span>
+                        <span class="detail-value" style="font-family:var(--font-mono);" id="ticketTrainDisplay">WR-90101 (EMU)</span>
+                    </div>
+                    <div class="detail-item-group">
+                        <span class="detail-title">Total Fare Paid</span>
+                        <span class="detail-value highlight" id="ticketFareDisplay">₹15.00</span>
+                    </div>
+                    <div class="detail-item-group">
+                        <span class="detail-title">Travel Class</span>
+                        <span class="detail-value" id="ticketClassDisplay">Second Class (II)</span>
+                    </div>
+                    <div class="detail-item-group">
+                        <span class="detail-title">Validity Span</span>
+                        <span class="detail-value" style="color:var(--wr-green);"><i class="fas fa-clock"></i> 12 Hours (Fixed)</span>
+                    </div>
+                    <div class="detail-item-group">
+                        <span class="detail-title">Expiry Deadline</span>
+                        <span class="detail-value" id="ticketExpiryDisplay" style="font-size:0.85rem; font-family:var(--font-mono); font-weight:700;">--:--</span>
+                    </div>
+                </div>
+
+                <div class="uts-barcode-row">
+                    <div class="qr-code-box" id="liveTicketQR"></div>
+                    <div class="ticket-rules-text">
+                        <p><strong><i class="fas fa-shield-check" style="color:var(--wr-blue-600);"></i> 12-Hour Journey Regulations:</strong></p>
+                        <p>• <strong>Strict 12-Hour Validity:</strong> Valid across Western, Central, and Harbour suburban lines for exactly 12 hours from issue.</p>
+                        <p>• Transfers permitted at designated junction stations including Dadar (WR ⇄ CR) and Kurla (CR ⇄ HR).</p>
+                        <p>• Show this digital boarding pass or printed slip upon inspection by Railway Ticket Examiners (TTE).</p>
+                        <p>• Non-transferable and cryptographically secured by CRIS Centre for Railway Information Systems.</p>
+                    </div>
+                </div>
+
+                <div class="uts-ticket-footer">
+                    <span><i class="fas fa-shield-halved" style="color:var(--wr-green);"></i> Validated by CRIS Centre for Railway Information Systems</span>
+                    <span style="font-family:var(--font-mono); font-weight:700;">HAPPY JOURNEY • शुभ यात्रा</span>
+                </div>
+            </div>
+
+            <div class="ticket-actions-bar no-print">
+                <button type="button" class="btn-primary" onclick="window.print()" style="width: auto; padding: 0.85rem 1.75rem;">
+                    <i class="fas fa-print"></i> Print / Save as PDF
+                </button>
+                <button type="button" class="btn-secondary" onclick="showView('home')">
+                    <i class="fas fa-train"></i> Book Another Ticket
+                </button>
+                <button type="button" class="btn-danger" style="background:#dc2626;" onclick="showView('cancel')">
+                    <i class="fas fa-ban"></i> Cancel Ticket
+                </button>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             5. TICKET CANCELLATION VIEW
+             ========================================== -->
+        <section id="view-cancel" class="view-section">
+            <div class="glass-card">
+                <div class="glass-card-header" style="background: linear-gradient(135deg, #7f1d1d 0%, #b91c1c 100%);">
+                    <h2><i class="fas fa-ticket-slash"></i> Ticket Cancellation & Instant Refund System</h2>
+                    <span style="font-size: 0.85rem; color: #fecaca;"><i class="fas fa-clock-rotate-left"></i> Standard 24h Refund Guarantee</span>
+                </div>
+
+                <div class="glass-card-body">
+                    <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: var(--radius-lg); padding: 1rem 1.25rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 44px; height: 44px; border-radius: 50%; background: #fee2e2; color: var(--wr-crimson); display:flex; align-items:center; justify-content:center; font-size:1.25rem; flex-shrink:0;">
+                            <i class="fas fa-hand-holding-dollar"></i>
+                        </div>
+                        <div style="font-size: 0.88rem; color: #991b1b; line-height: 1.4;">
+                            <strong>Railway Suburban Cancellation Rules:</strong> Unused suburban tickets can be cancelled within their 12-hour validity window. As per Indian Railways suburban policy, nominal clerkage charge (₹5) is deducted and the remainder is credited back to your original payment method.
+                        </div>
+                    </div>
+
+                    <div id="cancelTicketContainer">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             6. ABOUT SYSTEM VIEW
+             ========================================== -->
+        <section id="view-about" class="view-section">
+            <div class="glass-card">
+                <div class="glass-card-header">
+                    <h2><i class="fas fa-circle-info"></i> Mumbai Suburban Railway E-Ticket Portal</h2>
+                    <span class="badge badge-success"><i class="fas fa-network-wired"></i> Western • Central • Harbour Corridors</span>
+                </div>
+
+                <div class="glass-card-body">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center; margin-bottom: 2.5rem;">
+                        <div>
+                            <div class="badge badge-info" style="margin-bottom: 0.5rem;">Project Heritage & Vision</div>
+                            <h3 style="font-size: 1.5rem; font-weight: 800; color: var(--wr-navy-900); margin-bottom: 1rem; line-height: 1.3;">
+                                Empowering Millions of Commuters Across WR, CR & HR Lines
+                            </h3>
+                            <p style="color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.6;">
+                                This platform is a next-generation suburban train ticketing system inspired by Indian Railways CRIS UTS (Unreserved Ticketing System) and IRCTC. Architected and built by <strong>Manoj Gupta</strong> as a flagship college project, it modernizes ticketing across Mumbai's massive suburban rail network.
+                            </p>
+                            <p style="color: var(--text-secondary); line-height: 1.6;">
+                                It features interactive transit map route booking, multi-line fare calculation, interchange routing at Dadar and Kurla, and strict <strong>12-hour ticket validity enforcement</strong> with real-time countdown meters.
+                            </p>
+                        </div>
+
+                        <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 1px solid #bbf7d0; border-radius: var(--radius-xl); padding: 1.75rem;">
+                            <h4 style="font-size: 1.1rem; font-weight: 700; color: #166534; margin-bottom: 1rem;">
+                                <i class="fas fa-award"></i> Core Platform Features
+                            </h4>
+                            <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.9rem; color: #14532d;">
+                                <li><i class="fas fa-check-circle" style="color:var(--wr-green);"></i> <strong>Unified 3-Line Network:</strong> Western (124 km), Central (121 km), Harbour (53 km).</li>
+                                <li><i class="fas fa-check-circle" style="color:var(--wr-green);"></i> <strong>Interactive Transit Map:</strong> Point-and-click route selection with SVG track tracing.</li>
+                                <li><i class="fas fa-check-circle" style="color:var(--wr-green);"></i> <strong>12-Hour Ticket Validity:</strong> Real-time countdown timer & progress meter.</li>
+                                <li><i class="fas fa-check-circle" style="color:var(--wr-green);"></i> <strong>Smart Interchange Routing:</strong> Automatic transfers at Dadar (WR ⇄ CR) and Kurla (CR ⇄ HR).</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Developer Attribution -->
+                    <div style="background: linear-gradient(135deg, #0b2545 0%, #172554 100%); color: #ffffff; border-radius: var(--radius-lg); padding: 1.5rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
+                        <div>
+                            <div style="font-size: 0.78rem; text-transform: uppercase; color: var(--wr-saffron); font-weight: 700;">Developer & Project Creator</div>
+                            <div style="font-size: 1.35rem; font-weight: 800;">Manoj Gupta</div>
+                            <div style="font-size: 0.82rem; color: #cbd5e1; margin-top: 0.2rem;">
+                                Original College Project • Elevated to Production-Grade Suburban Transit Platform
+                            </div>
+                        </div>
+                        <div style="display:flex; gap:0.75rem;">
+                            <button type="button" class="btn-primary" style="background: var(--wr-saffron); color: #000000; font-weight: 800; width: auto;" onclick="showView('home')">
+                                <i class="fas fa-train"></i> Book Journey Now
+                            </button>
+                            <a href="https://github.com/manoj7923/E-Ticket" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="background:rgba(255,255,255,0.15); color:#fff; border-color:rgba(255,255,255,0.3); width:auto; text-decoration:none;">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             7. RAIL MADAD SUPPORT VIEW
+             ========================================== -->
+        <section id="view-contact" class="view-section">
+            <div class="glass-card">
+                <div class="glass-card-header" style="background: linear-gradient(135deg, #0b2545 0%, #1e40af 100%);">
+                    <h2><i class="fas fa-headset"></i> Rail Madad Passenger Support & Grievance Redressal</h2>
+                    <span style="font-size:0.85rem; color:#93c5fd;"><i class="fas fa-shield"></i> Indian Railways Official Helpdesk</span>
+                </div>
+
+                <div class="glass-card-body">
+                    <div style="display: grid; grid-template-columns: 3fr 2fr; gap: 2rem;">
+                        <div>
+                            <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem; color: var(--wr-navy-900);">
+                                <i class="fas fa-pen-to-square"></i> Lodge a Grievance / Feedback
+                            </h3>
+
+                            <form onsubmit="event.preventDefault(); submitGrievance();">
+                                <div class="form-group" style="margin-bottom: 1rem;">
+                                    <label><i class="fas fa-user"></i> Passenger Name</label>
+                                    <input type="text" id="gName" class="form-control" value="Manoj Gupta" required>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                                    <div class="form-group">
+                                        <label><i class="fas fa-envelope"></i> Email</label>
+                                        <input type="email" id="gEmail" class="form-control" value="manoj@example.com" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label><i class="fas fa-phone"></i> Mobile No</label>
+                                        <input type="tel" id="gMobile" class="form-control" value="9876543210" required>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 1rem;">
+                                    <label><i class="fas fa-tag"></i> Category</label>
+                                    <select id="gCategory" class="form-control">
+                                        <option>Ticket Booking / Payment Deducted</option>
+                                        <option>Refund Delay & Cancellation</option>
+                                        <option>Suburban EMU Cleanliness</option>
+                                        <option>Schedule Frequency & Delay</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 1.5rem;">
+                                    <label><i class="fas fa-message"></i> Description</label>
+                                    <textarea id="gText" class="form-control" style="height: 120px;" placeholder="Describe your experience or query..." required></textarea>
+                                </div>
+                                <button type="submit" class="btn-primary">
+                                    <i class="fas fa-paper-plane"></i> Submit to Commercial Division
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Helplines -->
+                        <div>
+                            <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.5rem;">
+                                <h4 style="font-size: 1rem; font-weight: 700; color: var(--wr-navy-900); margin-bottom: 1rem;">
+                                    <i class="fas fa-phone-volume" style="color:var(--wr-crimson);"></i> Official Helplines
+                                </h4>
+                                <div style="display: flex; flex-direction: column; gap: 0.85rem; font-size: 0.88rem;">
+                                    <div style="display:flex; justify-content:space-between; padding-bottom:0.5rem; border-bottom:1px solid #e2e8f0;">
+                                        <span>Rail Madad:</span> <strong style="color:var(--wr-blue-600); font-family:var(--font-mono);">139</strong>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; padding-bottom:0.5rem; border-bottom:1px solid #e2e8f0;">
+                                        <span>RPF Security:</span> <strong style="color:var(--wr-crimson); font-family:var(--font-mono);">182</strong>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between;">
+                                        <span>GRP Helpline:</span> <strong style="color:var(--wr-navy-900); font-family:var(--font-mono);">1512</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             8. ADMIN CONSOLE VIEW
+             ========================================== -->
+        <section id="view-admin" class="view-section">
+            <div class="glass-card">
+                <div class="glass-card-header" style="background: linear-gradient(135deg, #0b2545 0%, #172554 100%);">
+                    <h2><i class="fas fa-gauge-high"></i> Mumbai Suburban Commercial Operations Console</h2>
+                    <span class="badge badge-warning">Admin Superuser</span>
+                </div>
+
+                <div class="glass-card-body">
+                    <!-- KPI Cards -->
+                    <div class="admin-stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon primary"><i class="fas fa-users"></i></div>
+                            <div>
+                                <div class="stat-number">4</div>
+                                <div class="stat-label">Registered Passengers</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon success"><i class="fas fa-ticket-simple"></i></div>
+                            <div>
+                                <div class="stat-number">28</div>
+                                <div class="stat-label">Confirmed Tickets</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon warning"><i class="fas fa-indian-rupee-sign"></i></div>
+                            <div>
+                                <div class="stat-number">₹685.00</div>
+                                <div class="stat-label">Suburban Fare Revenue</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon info"><i class="fas fa-train-subway"></i></div>
+                            <div>
+                                <div class="stat-number">89</div>
+                                <div class="stat-label">Network Stations</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bookings Table -->
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--wr-navy-900); margin: 2rem 0 1rem;">
+                        <i class="fas fa-list-check"></i> Recent Suburban Bookings (WR • CR • HR)
+                    </h3>
+                    <div class="table-container">
+                        <table class="railway-table">
+                            <thead>
+                                <tr>
+                                    <th>Booking Ref</th>
+                                    <th>Passenger</th>
+                                    <th>Route</th>
+                                    <th>Line</th>
+                                    <th>Train</th>
+                                    <th>Fare</th>
+                                    <th>Validity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong style="font-family:var(--font-mono); color:var(--wr-blue-600);">UTS-WR-83921</strong></td>
+                                    <td>Manoj Gupta</td>
+                                    <td>Churchgate ➔ Borivali</td>
+                                    <td><span class="badge badge-wr">Western</span></td>
+                                    <td>WR-90101</td>
+                                    <td>₹15.00</td>
+                                    <td><span class="badge-12h" style="font-size:0.75rem; padding:0.15rem 0.5rem;"><i class="fas fa-clock"></i> 12h Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong style="font-family:var(--font-mono); color:var(--wr-blue-600);">UTS-CR-71042</strong></td>
+                                    <td>Pooja Sharma</td>
+                                    <td>CSMT ➔ Thane</td>
+                                    <td><span class="badge badge-cr">Central</span></td>
+                                    <td>CR-92101</td>
+                                    <td>₹15.00</td>
+                                    <td><span class="badge-12h" style="font-size:0.75rem; padding:0.15rem 0.5rem;"><i class="fas fa-clock"></i> 12h Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong style="font-family:var(--font-mono); color:var(--wr-blue-600);">UTS-HR-55219</strong></td>
+                                    <td>Rahul Patil</td>
+                                    <td>CSMT ➔ Panvel</td>
+                                    <td><span class="badge badge-hr">Harbour</span></td>
+                                    <td>HR-94101</td>
+                                    <td>₹20.00</td>
+                                    <td><span class="badge-12h" style="font-size:0.75rem; padding:0.15rem 0.5rem;"><i class="fas fa-clock"></i> 12h Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong style="font-family:var(--font-mono); color:var(--wr-blue-600);">UTS-XF-33820</strong></td>
+                                    <td>Amit Verma</td>
+                                    <td>Andheri ➔ Kurla ➔ Vashi</td>
+                                    <td><span class="badge badge-interchange"><i class="fas fa-shuffle"></i> WR ⇄ HR</span></td>
+                                    <td>WR-90210</td>
+                                    <td>₹20.00</td>
+                                    <td><span class="badge-12h" style="font-size:0.75rem; padding:0.15rem 0.5rem;"><i class="fas fa-clock"></i> 12h Active</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Professional Railway Footer -->
+    <footer class="railway-footer no-print">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h4>Mumbai Suburban Railway Ticketing Portal</h4>
+                <p style="font-size: 0.82rem; color: #64748b; margin-top: 0.25rem;">
+                    Center for Railway Information Systems (CRIS) • Western, Central & Harbour Lines
+                </p>
+            </div>
+            <div class="footer-links">
+                <a href="javascript:void(0)" onclick="showView('home')">Book Ticket</a>
+                <a href="javascript:void(0)" onclick="showView('ticket')">My Tickets</a>
+                <a href="javascript:void(0)" onclick="showView('cancel')">Cancel Ticket</a>
+                <a href="javascript:void(0)" onclick="showView('about')">About System</a>
+                <a href="javascript:void(0)" onclick="showView('contact')">Rail Madad</a>
+                <a href="javascript:void(0)" onclick="showView('admin')">Admin</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 E-Ticket System For Local Train • Western, Central & Harbour Lines • Designed & Developed by Manoj Gupta
+        </div>
+    </footer>
+
+    <!-- Interactive Engine Script -->
+    <script src="java/modern-railway.js"></script>
+    <script>
+        // Current Booking State
+        let currentBooking = {
+            from: 'Churchgate',
+            to: 'Borivali',
+            class: 'Second Class',
+            type: 'Single',
+            date: new Date().toISOString().split('T')[0],
+            time: '09:30',
+            fare: 15,
+            pnr: 'UTS-WR-' + Math.floor(10000 + Math.random() * 90000),
+            train: 'WR-90101',
+            linesUsed: ['Western Line'],
+            interchangeText: 'Direct Journey',
+            distance: '34.2'
+        };
+
+        let demoCountdownInterval = null;
+
+        // View Navigation
+        function showView(viewId) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active-tab'));
+
+            const target = document.getElementById('view-' + viewId);
+            if (target) target.classList.add('active');
+
+            const navTarget = document.getElementById('nav-' + viewId);
+            if (navTarget) navTarget.classList.add('active-tab');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            if (viewId === 'ticket') {
+                renderTicketDetails();
+            } else if (viewId === 'cancel') {
+                renderCancelView();
+            } else if (viewId === 'home') {
+                // Ensure map is rendered when returning to home
+                renderInteractiveTransitMap('transitMapContainer');
+                updateMapRouteHUD();
+            }
+        }
+
+        // Fare Calculation & Route UI Update
+        function updateFareUI() {
+            const f = document.getElementById('homeFrom').value;
+            const t = document.getElementById('homeTo').value;
+            const c = document.getElementById('homeClass').value;
+            const res = calculateMultiLineFare(f, t, c, currentBooking.type);
+
+            currentBooking.from = f;
+            currentBooking.to = t;
+            currentBooking.class = c;
+            currentBooking.fare = res.fare;
+            currentBooking.distance = res.distance;
+            currentBooking.linesUsed = res.linesUsed;
+            currentBooking.interchangeText = res.interchangeText;
+
+            // Assign train prefix based on lines
+            if (res.linesUsed.includes('Western Line')) currentBooking.train = 'WR-90101';
+            else if (res.linesUsed.includes('Central Main Line')) currentBooking.train = 'CR-92101';
+            else currentBooking.train = 'HR-94101';
+
+            document.getElementById('liveFareDisplay').textContent = res.fare;
+            document.getElementById('liveDistance').textContent = res.distance > 0 ? `${res.distance} km (~${res.estimatedMins} mins)` : 'Select Stations';
+            document.getElementById('liveRouteSummary').textContent = `${f} ➔ ${t} (${c}) • ${res.linesUsed.join(', ')}`;
+
+            // Update map pins and HUD
+            mapBookingState.selectedOrigin = findStation(f);
+            mapBookingState.selectedDest = findStation(t);
+            renderInteractiveTransitMap('transitMapContainer');
+            updateMapRouteHUD();
+        }
+
+        function swapStationInputs() {
+            const fromEl = document.getElementById('homeFrom');
+            const toEl = document.getElementById('homeTo');
+            const temp = fromEl.value;
+            fromEl.value = toEl.value;
+            toEl.value = temp;
+            updateFareUI();
+        }
+
+        function setTripTypeLocal(type) {
+            currentBooking.type = type;
+            document.getElementById('btnTypeSingle').classList.toggle('active', type === 'Single');
+            document.getElementById('btnTypeReturn').classList.toggle('active', type === 'Return');
+            updateFareUI();
+        }
+
+        function resetBookingForm() {
+            document.getElementById('homeFrom').value = 'Churchgate';
+            document.getElementById('homeTo').value = 'Borivali';
+            document.getElementById('homeClass').value = 'Second Class';
+            setTripTypeLocal('Single');
+            clearMapSelection();
+            updateFareUI();
+        }
+
+        function goToTrainSelection() {
+            updateFareUI();
+            const singleFare = currentBooking.fare;
+            const returnFare = currentBooking.type === 'Return' ? singleFare : singleFare * 2;
+
+            document.getElementById('trainsRouteTitle').textContent = `${currentBooking.from} ➔ ${currentBooking.to}`;
+            document.getElementById('trainsRouteLineMeta').textContent = `Selected Journey • ${currentBooking.linesUsed.join(' ⇄ ')}`;
+            document.getElementById('trainsInterchangeNote').textContent = currentBooking.interchangeText;
+            document.getElementById('trainsClassTitle').textContent = currentBooking.class;
+
+            document.getElementById('cardRoute1').textContent = `${currentBooking.from} ➔ ${currentBooking.to}`;
+            document.getElementById('cardRoute2').textContent = `${currentBooking.from} ⇄ ${currentBooking.to}`;
+            document.getElementById('cardTrain1').textContent = `Train ${currentBooking.train}`;
+            document.getElementById('cardTrain2').textContent = `Train ${currentBooking.train.replace('01', '02')}`;
+
+            document.getElementById('fareSingleDisplay').textContent = `₹${singleFare.toFixed(2)}`;
+            document.getElementById('fareReturnDisplay').textContent = `₹${returnFare.toFixed(2)}`;
+
+            showView('trains');
+        }
+
+        function proceedToPayment(type) {
+            currentBooking.type = type;
+            const singleFare = (currentBooking.type === 'Return' && currentBooking.fare % 2 === 0) ? currentBooking.fare / 2 : currentBooking.fare;
+            const finalFare = type === 'Return' ? singleFare * 2 : singleFare;
+            currentBooking.fare = finalFare;
+
+            document.getElementById('payRouteSummary').textContent = `${currentBooking.from} To ${currentBooking.to}`;
+            document.getElementById('payModeBadge').textContent = `${type} Journey (${currentBooking.class}) • ${currentBooking.linesUsed.join(' ⇄ ')}`;
+            document.getElementById('payAmountDisplay').textContent = `₹${finalFare.toFixed(2)}`;
+
+            generateTicketQR('demoPaymentQR', `UPI-PAY-MUMBAI-Rs${finalFare}`);
+            showView('payment');
+        }
+
+        function switchPayTab(tab, btn) {
+            document.querySelectorAll('.payment-tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            ['upi', 'card', 'net', 'wallet'].forEach(t => {
+                const el = document.getElementById('ptab-' + t);
+                if (el) el.style.display = (t === tab) ? 'block' : 'none';
+            });
+        }
+
+        function finalizePayment(method) {
+            const prefix = currentBooking.linesUsed.includes('Western Line') ? 'WR' : (currentBooking.linesUsed.includes('Central Main Line') ? 'CR' : 'HR');
+            currentBooking.pnr = `UTS-${prefix}-` + Math.floor(10000 + Math.random() * 90000);
+            alert(`Payment Authorized via ${method}!\nAmount Paid: ₹${currentBooking.fare.toFixed(2)}\nUTS Suburban Ticket Confirmed.\n\nValidity Window: 12 Hours from Now.`);
+            showView('ticket');
+        }
+
+        function renderTicketDetails() {
+            document.getElementById('ticketPnrDisplay').textContent = currentBooking.pnr;
+            document.getElementById('ticketOriginDisplay').textContent = currentBooking.from;
+            document.getElementById('ticketDestDisplay').textContent = currentBooking.to;
+            document.getElementById('ticketTypeBadge').textContent = `${currentBooking.type.toUpperCase()} JOURNEY`;
+            document.getElementById('ticketFareDisplay').textContent = `₹${currentBooking.fare.toFixed(2)}`;
+            document.getElementById('ticketClassDisplay').textContent = currentBooking.class;
+            document.getElementById('ticketTrainDisplay').textContent = `${currentBooking.train} (EMU)`;
+            document.getElementById('ticketLineNetwork').textContent = `Mumbai Suburban • ${currentBooking.linesUsed.join(' ⇄ ')}`;
+            document.getElementById('ticketLineLabel').textContent = currentBooking.linesUsed.join(' ⇄ ');
+
+            // Calculate 12-hour validity
+            const valObj = get12HourValidity();
+            document.getElementById('demoIssuedAt').textContent = valObj.issuedAt;
+            document.getElementById('demoValidUntil').textContent = valObj.validUntil;
+            document.getElementById('ticketExpiryDisplay').textContent = valObj.validUntil;
+
+            // Initialize or restart live 12-hour countdown
+            if (demoCountdownInterval) clearInterval(demoCountdownInterval);
+            demoCountdownInterval = init12HourCountdown(valObj.endTimestamp, 'demoTicketCountdown', 'demoValidityProgressBar');
+
+            // Station short codes
+            const stFrom = findStation(currentBooking.from);
+            const stTo = findStation(currentBooking.to);
+            document.getElementById('ticketOriginCode').textContent = `[ ${stFrom ? stFrom.code : 'MUM'} ]`;
+            document.getElementById('ticketDestCode').textContent = `[ ${stTo ? stTo.code : 'MUM'} ]`;
+
+            // QR Code
+            generateTicketQR('liveTicketQR', `UTS:MUMBAI:${currentBooking.pnr}:${currentBooking.from}->${currentBooking.to}:FARE=${currentBooking.fare}:VALID=12_HOURS:OK`);
+        }
+
+        function renderCancelView() {
+            const container = document.getElementById('cancelTicketContainer');
+            const fare = currentBooking.fare;
+            const refund = Math.max(0, fare - 5);
+
+            container.innerHTML = `
+                <div style="background: #ffffff; border: 2px solid #e2e8f0; border-radius: var(--radius-lg); padding: 1.5rem;">
+                    <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:1rem;">
+                        <div>
+                            <span class="badge badge-success">Active Valid Ticket</span>
+                            <span class="badge-12h" style="font-size:0.75rem; padding:0.15rem 0.5rem; margin-left:0.5rem;"><i class="fas fa-clock"></i> 12h Valid</span>
+                            <span style="font-family:var(--font-mono); font-weight:700; color:var(--wr-blue-600); margin-left:0.5rem;">${currentBooking.pnr}</span>
+                            <div style="font-size: 1.2rem; font-weight:800; margin-top:0.35rem;">${currentBooking.from} To ${currentBooking.to}</div>
+                            <div style="font-size: 0.82rem; color:#64748b;">${currentBooking.type} Journey (${currentBooking.class}) • Passenger: Manoj Gupta</div>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:1.5rem;">
+                            <div style="text-align:right;">
+                                <div style="font-size:0.72rem; color:#64748b; text-decoration:line-through;">Original: ₹${fare.toFixed(2)}</div>
+                                <div style="font-size:0.75rem; color:#dc2626;">Clerkage Deducted: ₹5.00</div>
+                                <div style="font-size:1.15rem; font-weight:800; color:var(--wr-green);">Refund: ₹${refund.toFixed(2)}</div>
+                            </div>
+                            <button type="button" class="btn-danger" onclick="cancelCurrentTicket(${fare}, ${refund})">
+                                <i class="fas fa-trash-can"></i> Cancel Ticket
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function cancelCurrentTicket(fare, refund) {
+            if (confirm(`Confirm Cancellation of Ticket ${currentBooking.pnr}?\n\nOriginal Fare: ₹${fare.toFixed(2)}\nCancellation Clerkage Fee: ₹5.00\nNet Refund: ₹${refund.toFixed(2)}\n\nRefund will be credited to your original payment source within 24 hours.`)) {
+                alert(`Ticket Cancelled Successfully!\nRefund of ₹${refund.toFixed(2)} has been queued to your bank account.`);
+                document.getElementById('cancelTicketContainer').innerHTML = `
+                    <div style="text-align:center; padding:2rem; background:#f8fafc; border-radius:var(--radius-lg); border:1px solid #e2e8f0;">
+                        <i class="fas fa-circle-check" style="font-size:2.5rem; color:var(--wr-green); margin-bottom:0.75rem;"></i>
+                        <h4 style="font-weight:700; font-size:1.1rem; color:var(--wr-navy-900);">Refund Processed Successfully</h4>
+                        <p style="font-size:0.85rem; color:#64748b; margin-top:0.25rem;">Ticket ${currentBooking.pnr} has been revoked and ₹${refund.toFixed(2)} refund logged.</p>
+                        <button type="button" class="btn-primary" style="margin-top:1.25rem; width:auto; padding:0.6rem 1.5rem;" onclick="showView('home')">
+                            <i class="fas fa-train"></i> Book New Ticket
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function submitGrievance() {
+            alert('Your Grievance has been registered with Mumbai Suburban Rail Madad!\nTicket ID #GR-98231 generated. An SMS update has been sent.');
+            document.getElementById('gText').value = '';
+        }
+
+        // Initialize defaults
+        document.addEventListener('DOMContentLoaded', () => {
+            const today = new Date().toISOString().split('T')[0];
+            const dateInput = document.getElementById('homeDate');
+            if (dateInput) {
+                dateInput.value = today;
+                dateInput.min = today;
+            }
+            const timeInput = document.getElementById('homeTime');
+            if (timeInput) {
+                const now = new Date();
+                timeInput.value = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+            }
+
+            // Sync map click selection with form inputs
+            mapBookingState.selectedOrigin = findStation('Churchgate');
+            mapBookingState.selectedDest = findStation('Borivali');
+            renderInteractiveTransitMap('transitMapContainer');
+            updateMapRouteHUD();
+            updateFareUI();
+        });
+    </script>
+</body>
+</html>

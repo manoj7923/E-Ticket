@@ -1,0 +1,293 @@
+
+Body
+{
+	 background-image: url("image/img7.png");
+
+  background-size:cover;
+  background-repeat: no-repeat;
+  height:100vh;
+}
+
+Body {
+  font-family: "Lato", sans-serif;
+}
+.manu {
+	 position:absolute;
+	 left:0%;
+	 
+ }
+.sidenav {
+  height:100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left:0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 100px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+
+
+*{ 
+   margin:0;
+   padding:0;
+  
+  
+}
+
+
+.logout{
+    position:absolute;	
+	top:6%;
+	left:27%;
+	text-decoration:none;
+
+   
+}
+
+.logout a{
+	
+color:#FFFFFF;
+
+}
+
+h2 a{
+	text-decoration:none;
+
+}
+
+.name a{
+	color:#FFFFFF;
+}
+
+header
+{
+	position: fixed;
+	background-color:#FFFFFF;
+	Width:100%;
+	color:black;
+	
+
+}
+
+
+ header{
+       
+	   margin-top: 0px;
+	   
+ }
+  header
+{
+	
+	height: 7vh;
+}
+
+
+
+.topicon{
+	 position: absolute;
+	left:5%;
+	 Top:10%;
+	
+}
+
+.Timeout{
+	 position:absolute;
+	 left:75%;
+	 Top:100%;
+}
+
+.usericon{
+	 position: absolute;
+	left:85%;
+	 Top:0%;
+}
+.usern{
+	 position: absolute;
+	left:90%;
+	 Top:10%;
+	   font-size:15px;
+	  text-decoration:none;
+}
+
+form
+{ 
+      position: absolute;
+	   width: 800px; 
+	   height:250px;
+	    left:19%;
+		Top:30%;
+        padding: 10px;  
+        background: Window;  
+        border-radius: 10px ;  
+}
+ 
+
+
+
+
+.banor{
+	position:absolute;
+
+	width:75%;
+	top:20%;
+	left:10%;
+}
+.baner2{
+	position:absolute;
+
+	width:75%;
+	top:5%;
+	left:10%;
+}
+.animated{
+	position:absolute;
+   
+	width:75%;
+	top:2%;
+	left:33%;
+}
+
+
+
+
+
+.loader_bg{
+    position: fixed;
+    z-index: 999999;
+    background: #fff;
+    width: 100%;
+    height: 100%;
+}
+.loader{
+    border: 0 soild transparent;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    top: calc(50vh - 75px);
+    left: calc(50vw - 75px);
+}
+.loader:before, .loader:after{
+    content: '';
+    border: 1em solid #ff5733;
+    border-radius: 50%;
+
+    width: inherit;
+    height: inherit;
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: loader 2s linear infinite;
+    opacity: 0;
+}
+.loader:before{
+    animation-delay: .5s;
+}
+@keyframes loader{
+    0%{
+        transform: scale(0);
+        opacity: 0;
+    }
+    50%{
+        opacity: 1;
+    }
+    100%{
+        transform: scale(1);
+        opacity: 0;
+    }
+}
+
+
+* {
+ margin: 0;
+ padding: 0;
+ box-sizing: border-box;
+}
+
+
+
+.animated {
+ font-size: 60px;
+ font-weight: 900;
+ text-decoration: none;
+ background: linear-gradient(to right, #CCC 50%, #FF5858 50%, #CC2E5D);
+ background-size: 200%;
+ -webkit-background-clip: text;
+ -webkit-text-fill-color: transparent;
+ transition: 0.5s ease-out;
+}
+
+.animated:hover {
+ background-position: -100%;
+}
+
+
+
+
+
+footer
+{
+	position: fixed;
+	background-color:#000000;
+	Width:100%;
+	color:white;
+
+
+}
+footer
+{
+	height: 5vh;
+	bottom:0;
+	left:0;
+}
+.f1
+{
+	 position: absolute;
+	  left:1%;
+	   Top:25%;
+}
+.f2
+{
+	 position: absolute;
+	  left:85%;
+	   Top:25%;
+}
+
+
+ 
+ 
+ 
+ 
+
+ 
+

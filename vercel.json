@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "name": "western-railway-eticket",
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/demo.html"
+    }
+  ]
+}

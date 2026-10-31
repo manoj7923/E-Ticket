@@ -1,0 +1,28 @@
+ <style>
+ footer
+{
+	position: fixed;
+	background-color:	#000000;
+	Width:100%;
+	color:white;
+
+}
+footer
+{
+	height: 5vh;
+	bottom:0;
+}
+.f1
+{
+	 position: absolute;
+	  left:1%;
+	   Top:25%;
+}
+.f2
+{
+	 position: absolute;
+	  left:85%;
+	   Top:25%;
+}
+
+</style>
