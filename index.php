@@ -71,9 +71,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
                     <span style="font-weight:700;"><i class="fas fa-key"></i> Quick Demo Login:</span>
                     <span style="font-size:0.75rem; color:#64748b;">(Click to test instantly)</span>
                 </div>
-                <button type="button" class="demo-pill-btn" onclick="fillDemoCredentials('manoj', '123')">
-                    <i class="fas fa-user-check"></i> Fill Demo Passenger (manoj / 123)
-                </button>
+                <a href="https://your-demo-url.vercel.app" target="_blank" style="display: block; margin-top: 10px; padding: 10px; background: #2563eb; color: #ffffff; text-align: center; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 0.85rem;">
+    🚀 Open Live Demo Website
+  </a>
             </div>
         </div>
     </div>
