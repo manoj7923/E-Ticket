@@ -108,14 +108,17 @@ Then open: **`http://localhost:8080`** (or open `demo.html` directly in your bro
 | Admin Operations | `admin` | `admin123` | Commercial Superuser |
 
 ---
+## 🌐 Live Interactive Demo
 
+Aap is project ka live interface aur booking flow direct test kar sakte hain:
 
-## 🌐 Cloud Deployment Options
+[![Live Demo](https://img.shields.io/badge/Demo-Live%20Preview-brightgreen?style=for-the-badge&logo=google-chrome)](https://manoj7923.github.io/E-Ticket/)
 
-Refer to the included [DEPLOYMENT.md](DEPLOYMENT.md) for full instructions:
-- **Render.com**: Instant one-click Dockerized full-stack deployment (`render.yaml`).
-- **Vercel / GitHub Pages**: Deploy the interactive `demo.html` client demo (`vercel.json`).
-- **cPanel / Shared Hosting (InfinityFree, Hostinger)**: Upload files via FTP/File Manager and import `db/schema.sql`.
+👉 **[Click Here to Open Live Demo](https://manoj7923.github.io/E-Ticket/)**
+
+> **Test Credentials:**
+> - **Passenger ID:** `manoj` | **Password:** `123`
+> - **Admin ID:** `admin` | **Password:** `admin123`
 
 ---
 
