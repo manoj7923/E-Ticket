@@ -109,29 +109,6 @@ Then open: **`http://localhost:8080`** (or open `demo.html` directly in your bro
 
 ---
 
-## 📦 How to Publish This Project to GitHub
-
-Follow these simple steps in terminal or Git Bash to publish the project to your GitHub account:
-
-```bash
-# 1. Initialize Git repository
-git init
-
-# 2. Add all files
-git add .
-
-# 3. Create initial commit
-git commit -m "feat: complete Mumbai Suburban multi-line e-ticketing platform with interactive map and 12h validity"
-
-# 4. Link to your GitHub repository (replace with your repo URL)
-git remote add origin https://github.com/manoj7923/E-Ticket.git
-
-# 5. Push to GitHub
-git branch -M main
-git push -u origin main
-```
-
----
 
 ## 🌐 Cloud Deployment Options
 
